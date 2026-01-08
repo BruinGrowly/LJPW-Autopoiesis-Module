@@ -45,7 +45,7 @@ class LJPWState:
     @classmethod
     def from_array(cls, arr: np.ndarray) -> 'LJPWState':
         """Create state from array."""
-        return cls(L=float(arr[0]), J=float(arr[1]),
+        return cls(L=float(arr[0]), J=float(arr[1]), 
                    P=float(arr[2]), W=float(arr[3]))
     
     @classmethod

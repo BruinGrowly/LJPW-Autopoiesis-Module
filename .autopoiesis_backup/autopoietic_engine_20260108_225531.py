@@ -383,8 +383,7 @@ class AutopoieticEngine:
             "initial_efficiency": initial_eff,
             "final_efficiency": final_eff,
             "improvement": final_eff - initial_eff,
-            "improvement_pct": (
-                final_eff - initial_eff) / initial_eff * 100 if initial_eff > 0 else 0,
+            "improvement_pct": (final_eff - initial_eff) / initial_eff * 100 if initial_eff > 0 else 0,
             "final_harmony": self.harmony(),
             "final_consciousness": self.consciousness(),
             "final_phase": self.phase(),

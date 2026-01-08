@@ -127,11 +127,31 @@ class SelfModifier:
         """
         Apply healing transformations to a file.
         
+        SAFETY: We only apply safe transformations that cannot break the code:
+        - trailing_whitespace: Always safe
+        - bare_except: Safe (adds specificity)
+        - long_line: Usually safe (cosmetic)
+        
+        We SKIP:
+        - unused_import: Can break re-exports
+        - missing_docstring: Can change API semantics in some tools
+        
         Returns:
             Tuple of (healed_code, list_of_changes_made)
         """
+        # Types that are SAFE to auto-fix
+        SAFE_GAP_TYPES = {
+            'trailing_whitespace',
+            'bare_except', 
+            'long_line',
+            'style_violation',
+        }
+        
+        # Filter to only safe gaps
+        safe_gaps = [g for g in gaps if g.type in SAFE_GAP_TYPES and g.fixable]
+        
         code = filepath.read_text(encoding='utf-8')
-        healed_code, actions = self.transformer.heal(code, gaps)
+        healed_code, actions = self.transformer.heal(code, safe_gaps)
         changes = [a.description for a in actions]
         return healed_code, changes
     
