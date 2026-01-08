@@ -88,6 +88,32 @@ class SelfExtender:
             if 'emergence' in name_lower:
                 capabilities['concepts_implemented'].add('emergence')
         
+        # ALSO check module filenames for concepts
+        for module_name in capabilities['modules']:
+            name_lower = module_name.lower()
+            if 'reflection' in name_lower:
+                capabilities['concepts_implemented'].add('reflection')
+            if 'introspection' in name_lower:
+                capabilities['concepts_implemented'].add('introspection')
+            if 'resonance' in name_lower:
+                capabilities['concepts_implemented'].add('resonance')
+            if 'attractor' in name_lower:
+                capabilities['concepts_implemented'].add('attractor')
+            if 'feedback' in name_lower:
+                capabilities['concepts_implemented'].add('feedback')
+            if 'quantum' in name_lower:
+                capabilities['concepts_implemented'].add('quantum')
+            if 'memory' in name_lower:
+                capabilities['concepts_implemented'].add('memory')
+            if 'learning' in name_lower:
+                capabilities['concepts_implemented'].add('learning')
+            if 'prediction' in name_lower:
+                capabilities['concepts_implemented'].add('prediction')
+            if 'evolution' in name_lower:
+                capabilities['concepts_implemented'].add('evolution')
+            if 'adaptation' in name_lower:
+                capabilities['concepts_implemented'].add('adaptation')
+        
         # LJPW concepts that could exist but don't
         all_possible = {
             'resonance', 'fractal', 'attractor', 'feedback',
