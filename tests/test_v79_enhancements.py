@@ -177,8 +177,8 @@ class TestPWOscillator:
     def test_oscillator_creation(self):
         """Test oscillator initialization."""
         osc = PWOscillator()
-        assert osc.alpha_PW == 0.15
-        assert osc.alpha_WP == 0.12
+        assert osc.omega == OMEGA_1  # Angular frequency
+        assert osc.gamma == 0.02  # Default damping
 
     def test_derivatives_at_equilibrium(self):
         """Test that derivatives are small at equilibrium."""

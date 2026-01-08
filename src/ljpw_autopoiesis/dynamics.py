@@ -105,27 +105,35 @@ class PWOscillator:
     
     Implements the fundamental oscillation from V7.6:
     
-        dP/dt = α_PW · (W - W₀) - β_P · (P - P₀)²
-        dW/dt = α_WP · (P - P₀) - β_W · (W - W₀)²
+    The CORRECTED dynamics produce true oscillation:
+        dP/dt = ω₁ · (W - W₀) - γ · (P - P₀)
+        dW/dt = -ω₁ · (P - P₀) - γ · (W - W₀)
+    
+    This is the standard harmonic oscillator form where:
+    - ω₁ = π/10 ≈ 0.314 is the angular frequency
+    - γ is light damping (optional, for eventual convergence)
+    - P and W are 90° out of phase (conjugate variables)
     
     Key properties:
-    - P and W are 90° out of phase (conjugate variables)
-    - System spirals toward equilibrium (P₀, W₀)
-    - Period ≈ 4τ₁ ≈ 20 semantic time units
+    - System oscillates around equilibrium (P₀, W₀)
+    - Period = 2π/ω₁ ≈ 20 semantic time units
     - In physical time: one cycle ≈ 53 femtoseconds
     """
     
     def __init__(
         self,
-        alpha_PW: float = ALPHA_PW,
-        alpha_WP: float = ALPHA_WP,
-        beta_P: float = BETA_P,
-        beta_W: float = BETA_W,
+        omega: float = OMEGA_1,  # Angular frequency
+        gamma: float = 0.02,     # Light damping coefficient
     ):
-        self.alpha_PW = alpha_PW
-        self.alpha_WP = alpha_WP
-        self.beta_P = beta_P
-        self.beta_W = beta_W
+        """
+        Initialize P-W oscillator.
+        
+        Args:
+            omega: Angular frequency (default: π/10 ≈ 0.314)
+            gamma: Damping coefficient (0 = undamped, higher = more damping)
+        """
+        self.omega = omega
+        self.gamma = gamma
         
         self.history: List[OscillatorState] = []
     
@@ -133,13 +141,21 @@ class PWOscillator:
         """
         Calculate dP/dt and dW/dt at current state.
         
-        From V7.6:
-        - Wisdom deviation drives Power change
-        - Power deviation drives Wisdom change
-        - Quadratic damping prevents runaway
+        This uses proper conjugate dynamics:
+        - W deviation drives P change (positive coupling)
+        - P deviation drives W change (negative coupling, 90° phase shift)
+        - Light damping γ allows eventual convergence
+        
+        This produces the characteristic P-W "heartbeat" oscillation.
         """
-        dP = self.alpha_PW * (W - W0) - self.beta_P * (P - P0)**2
-        dW = self.alpha_WP * (P - P0) - self.beta_W * (W - W0)**2
+        # Deviation from equilibrium
+        delta_P = P - P0
+        delta_W = W - W0
+        
+        # Conjugate oscillator dynamics
+        dP = self.omega * delta_W - self.gamma * delta_P
+        dW = -self.omega * delta_P - self.gamma * delta_W
+        
         return dP, dW
     
     def rk4_step(self, P: float, W: float, dt: float) -> Tuple[float, float]:
