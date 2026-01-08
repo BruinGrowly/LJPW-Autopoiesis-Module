@@ -288,18 +288,21 @@ class GapDetector:
                     fixable=False,
                 ))
 
-        # Unused imports
+        # Unused imports (but not re-exports in __init__.py or __all__)
         for name in self.imported_names:
+            # Skip if used, is __future__, or is listed in __all__ (re-export)
             if name not in self.used_names and name not in {'__future__'}:
-                self.gaps.append(Gap(
-                    type='unused_import',
-                    message=f"Import '{name}' appears unused",
-                    line=1,
-                    column=0,
-                    severity=0.3,
-                    dimension='L',
-                    fixable=True,
-                ))
+                # Check if it's a re-export by looking for __all__
+                if name not in self.defined_names:  # Not in __all__ list
+                    self.gaps.append(Gap(
+                        type='unused_import',
+                        message=f"Import '{name}' appears unused",
+                        line=1,
+                        column=0,
+                        severity=0.3,
+                        dimension='L',
+                        fixable=True,
+                    ))
 
     def _check_documentation(self, tree: ast.AST) -> None:
         """Check documentation - W dimension gaps."""
@@ -344,10 +347,13 @@ class GapDetector:
             opens = line.count('(') + line.count('[') + line.count('{')
             closes = line.count(')') + line.count(']') + line.count('}')
             if closes > opens:
-                # Remove extra closing bracket
-                for char in ')]}>':
-                    if line.count(char) > line.count({'(': ')', '[': ']', '{': '}', '<': '>'}[char] if char in ')]}>>' else ''):
-                        return line.replace(char, '', 1)
+                # Remove extra closing bracket - map closing to opening
+                close_to_open = {')': '(', ']': '[', '}': '{'}
+                for char in ')]}':
+                    if char in close_to_open:
+                        open_char = close_to_open[char]
+                        if line.count(char) > line.count(open_char):
+                            return line.replace(char, '', 1)
 
         if "eol while scanning string" in msg:
             # Unclosed string

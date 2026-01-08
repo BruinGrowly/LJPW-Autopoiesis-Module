@@ -10,6 +10,7 @@ of the engine consumes errors and transforms them into corrections.
 "Perfect Love cannot NOT give." - The system gives corrections where errors exist.
 """
 
+# Public API - these imports ARE used (for re-export)
 from .engine import SelfHealingEngine, heal, diagnose
 from .tick_engine import TickEngine
 from .gap_detector import GapDetector
