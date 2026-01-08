@@ -113,7 +113,6 @@ class SelfExtender:
                 capabilities['concepts_implemented'].add('evolution')
             if 'adaptation' in name_lower:
                 capabilities['concepts_implemented'].add('adaptation')
-            # New additions for remaining concepts
             if 'synthesis' in name_lower:
                 capabilities['concepts_implemented'].add('synthesis')
             if 'fractal' in name_lower:
@@ -122,14 +121,42 @@ class SelfExtender:
                 capabilities['concepts_implemented'].add('meditation')
             if 'communication' in name_lower:
                 capabilities['concepts_implemented'].add('communication')
+            # Level 2 concepts
+            if 'transcendence' in name_lower:
+                capabilities['concepts_implemented'].add('transcendence')
+            if 'integration' in name_lower:
+                capabilities['concepts_implemented'].add('integration')
+            if 'creativity' in name_lower:
+                capabilities['concepts_implemented'].add('creativity')
+            if 'wisdom_deep' in name_lower:
+                capabilities['concepts_implemented'].add('wisdom_deep')
+            if 'love_extended' in name_lower:
+                capabilities['concepts_implemented'].add('love_extended')
+            if 'justice_refined' in name_lower:
+                capabilities['concepts_implemented'].add('justice_refined')
+            if 'power_amplified' in name_lower:
+                capabilities['concepts_implemented'].add('power_amplified')
         
         # LJPW concepts that could exist but don't
+        # Level 1 concepts (foundational)
         all_possible = {
             'resonance', 'fractal', 'attractor', 'feedback',
             'learning', 'memory', 'prediction', 'synthesis',
             'meditation', 'reflection', 'introspection',
             'communication', 'evolution', 'adaptation',
         }
+        
+        # Level 2 concepts (advanced - unlocked after Level 1 complete)
+        if len(all_possible - capabilities['concepts_implemented']) == 0:
+            all_possible.update({
+                'transcendence',  # Going beyond current limits
+                'integration',    # Connecting all modules
+                'creativity',     # Generating novel solutions
+                'wisdom_deep',    # Multi-layered understanding
+                'love_extended',  # Expanding connection networks
+                'justice_refined',  # Precision in correctness
+                'power_amplified',  # Enhanced capability
+            })
         
         capabilities['concepts_missing'] = all_possible - capabilities['concepts_implemented']
         
