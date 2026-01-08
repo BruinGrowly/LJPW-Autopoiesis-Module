@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
 def main():
     framework = AutonomousFramework()
-    log = framework.run(max_cycles=100)
+    log = framework.run(max_cycles=50)
     
     print()
     print('Evolution Log:')
