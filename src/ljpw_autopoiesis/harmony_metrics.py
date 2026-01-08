@@ -12,7 +12,7 @@ As errors are metabolized, the system converges toward harmony.
 """
 
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Tuple
 import math
 
 
@@ -141,9 +141,11 @@ class HarmonyState:
         bounded to [0.2, 1.0] to maintain viability.
         """
         def clip(val: float) -> float:
+            """TODO: Add documentation."""
             return max(-max_change, min(max_change, val))
 
         def bound(val: float) -> float:
+            """TODO: Add documentation."""
             return max(0.2, min(1.0, val))
 
         return HarmonyState(
