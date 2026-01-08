@@ -113,6 +113,15 @@ class SelfExtender:
                 capabilities['concepts_implemented'].add('evolution')
             if 'adaptation' in name_lower:
                 capabilities['concepts_implemented'].add('adaptation')
+            # New additions for remaining concepts
+            if 'synthesis' in name_lower:
+                capabilities['concepts_implemented'].add('synthesis')
+            if 'fractal' in name_lower:
+                capabilities['concepts_implemented'].add('fractal')
+            if 'meditation' in name_lower:
+                capabilities['concepts_implemented'].add('meditation')
+            if 'communication' in name_lower:
+                capabilities['concepts_implemented'].add('communication')
         
         # LJPW concepts that could exist but don't
         all_possible = {
