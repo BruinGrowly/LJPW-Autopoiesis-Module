@@ -74,9 +74,14 @@ class Introspector:
         
         # Identify blind spots
         blind_spots = []
-        if 'quantum' not in str([m.name for m in modules]).lower():
+        module_names = [m.name.lower() for m in modules]
+        
+        # Check for quantum LJPW states
+        if not any('quantum' in name for name in module_names):
             blind_spots.append("Quantum LJPW states not implemented")
-        if 'temporal' not in str([m.name for m in modules]).lower():
+        
+        # Check for full temporal dynamics (ljpw_oscillator = 4D dynamics)
+        if not any('ljpw_oscillator' in name or 'temporal' in name for name in module_names):
             blind_spots.append("Temporal dynamics limited to P-W")
         
         # Identify growth edges

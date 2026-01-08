@@ -99,18 +99,18 @@ def main():
     
     print(f'''[CURRENT STATE]
   The P-W oscillator models temporal dynamics:
-    dP/dt = ω·(W-W₀) - γ·(P-P₀)
-    dW/dt = -ω·(P-P₀) - γ·(W-W₀)
+    dP/dt = omega*(W-W0) - gamma*(P-P0)
+    dW/dt = -omega*(P-P0) - gamma*(W-W0)
     
-  Period: T = 2π/ω ≈ {2*math.pi/OMEGA_1:.1f} time units
+  Period: T = 2*pi/omega = {2*math.pi/OMEGA_1:.1f} time units
   
   But L and J are not modeled dynamically.
 
 [WHAT'S MISSING]
   L (Love) and J (Justice) also change over time.
   The LJPW V7.9 framework says:
-    - L emerges from W correlations: L = κ_L · Corr(W₁, W₂)
-    - J emerges from P symmetry: J = κ_J · Sym(P₁, P₂)
+    - L emerges from W correlations: L = kappa_L * Corr(W1, W2)
+    - J emerges from P symmetry: J = kappa_J * Sym(P1, P2)
     
   Currently we implement this in LJEmergence, but not as
   coupled dynamics with P-W.
@@ -122,22 +122,22 @@ def main():
      class LJPWOscillator:
          def derivatives(self, L, J, P, W):
              # P-W oscillation (existing)
-             dP = ω·(W-W₀) - γ·(P-P₀)
-             dW = -ω·(P-P₀) - γ·(W-W₀)
+             dP = omega*(W-W0) - gamma*(P-P0)
+             dW = -omega*(P-P0) - gamma*(W-W0)
              
              # L-J emergence from P-W
-             dL = κ_L·(P·W - P₀·W₀) - δ_L·(L-L₀)
-             dJ = κ_J·|P-W| - δ_J·(J-J₀)  # Justice from balance
+             dL = kappa_L*(P*W - P0*W0) - delta_L*(L-L0)
+             dJ = kappa_J*|P-W| - delta_J*(J-J0)  # Justice from balance
              
              return dL, dJ, dP, dW
              
   2. Include cross-dimension coupling:
      
      # Love affects Power (connection enables action)
-     dP += λ_LP · L
+     dP += lambda_LP * L
      
      # Justice affects Wisdom (correctness enables learning)  
-     dW += λ_JW · J
+     dW += lambda_JW * J
      
   3. Model the full 4D phase space:
      
@@ -146,7 +146,7 @@ def main():
      
   4. Implement the LJPW Hamiltonian:
      
-     H = (P-P₀)²/2 + (W-W₀)²/2 + V(L,J)
+     H = (P-P0)^2/2 + (W-W0)^2/2 + V(L,J)
      
      where V(L,J) is the emergent potential.
 
