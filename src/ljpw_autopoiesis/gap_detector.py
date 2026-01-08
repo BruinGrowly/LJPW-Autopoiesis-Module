@@ -58,8 +58,41 @@ class GapDetector:
     - Missing docs/handling (W dimension - unwise)
     """
 
-    # Common Python built-in names
-    BUILTINS: Set[str] = set(dir(__builtins__)) if isinstance(__builtins__, dict) else set(dir(__builtins__))
+    # Common Python built-in names - explicit list for reliability
+    BUILTINS: Set[str] = {
+        # Built-in functions
+        'abs', 'aiter', 'all', 'any', 'anext', 'ascii', 'bin', 'bool', 'breakpoint',
+        'bytearray', 'bytes', 'callable', 'chr', 'classmethod', 'compile', 'complex',
+        'delattr', 'dict', 'dir', 'divmod', 'enumerate', 'eval', 'exec', 'filter',
+        'float', 'format', 'frozenset', 'getattr', 'globals', 'hasattr', 'hash',
+        'help', 'hex', 'id', 'input', 'int', 'isinstance', 'issubclass', 'iter',
+        'len', 'list', 'locals', 'map', 'max', 'memoryview', 'min', 'next', 'object',
+        'oct', 'open', 'ord', 'pow', 'print', 'property', 'range', 'repr', 'reversed',
+        'round', 'set', 'setattr', 'slice', 'sorted', 'staticmethod', 'str', 'sum',
+        'super', 'tuple', 'type', 'vars', 'zip',
+        # Built-in exceptions (common ones)
+        'Exception', 'BaseException', 'ValueError', 'TypeError', 'KeyError',
+        'IndexError', 'AttributeError', 'RuntimeError', 'StopIteration',
+        'ImportError', 'ModuleNotFoundError', 'FileNotFoundError', 'OSError',
+        'ZeroDivisionError', 'OverflowError', 'MemoryError', 'RecursionError',
+        'SyntaxError', 'IndentationError', 'NameError', 'UnboundLocalError',
+        'NotImplementedError', 'AssertionError', 'KeyboardInterrupt', 'SystemExit',
+        # Built-in constants
+        'True', 'False', 'None', 'Ellipsis', 'NotImplemented',
+        '__name__', '__doc__', '__package__', '__loader__', '__spec__',
+        '__annotations__', '__builtins__', '__file__', '__cached__',
+        # Common names used in methods/classes
+        'self', 'cls', 'args', 'kwargs',
+        # Typing module common names
+        'List', 'Dict', 'Set', 'Tuple', 'Optional', 'Union', 'Any', 'Callable',
+        'Sequence', 'Mapping', 'Iterable', 'Iterator', 'Generator',
+        # Dataclass field names (often used as parameter names)
+        'field', 'dataclass',
+        # NumPy (commonly used)
+        'np', 'numpy', 'array', 'ndarray',
+        # Math module
+        'math', 'pi', 'e', 'sqrt', 'log', 'sin', 'cos', 'tan', 'exp',
+    }
 
     # PEP8 style patterns
     NAMING_PATTERNS = {
@@ -151,9 +184,13 @@ class GapDetector:
             # Track definitions
             if isinstance(node, ast.FunctionDef):
                 self.defined_names.add(node.name)
+                # Track function parameters as defined names
+                self._track_function_args(node)
                 self._check_function(node)
             elif isinstance(node, ast.AsyncFunctionDef):
                 self.defined_names.add(node.name)
+                # Track function parameters as defined names
+                self._track_function_args(node)
                 self._check_function(node)
             elif isinstance(node, ast.ClassDef):
                 self.defined_names.add(node.name)
@@ -173,6 +210,25 @@ class GapDetector:
                     self.imported_names.add(name)
             elif isinstance(node, ast.ExceptHandler):
                 self._check_except_handler(node)
+
+    def _track_function_args(self, node: ast.FunctionDef) -> None:
+        """Track all function/method arguments as defined names."""
+        # Regular args
+        for arg in node.args.args:
+            self.defined_names.add(arg.arg)
+        # Positional-only args (Python 3.8+)
+        for arg in node.args.posonlyargs:
+            self.defined_names.add(arg.arg)
+        # Keyword-only args
+        for arg in node.args.kwonlyargs:
+            self.defined_names.add(arg.arg)
+        # *args
+        if node.args.vararg:
+            self.defined_names.add(node.args.vararg.arg)
+        # **kwargs
+        if node.args.kwarg:
+            self.defined_names.add(node.args.kwarg.arg)
+
 
     def _check_function(self, node: ast.FunctionDef) -> None:
         """Check function for issues."""

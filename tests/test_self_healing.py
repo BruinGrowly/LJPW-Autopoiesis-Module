@@ -59,12 +59,18 @@ class TestHarmonyState:
 
     def test_phase_detection(self):
         """Test phase detection based on harmony."""
+        # With H = (L×J×P×W)/(L0×J0×P0×W0), need to calculate carefully:
+        # L0×J0×P0×W0 ≈ 0.127
+        # For ENTROPIC (H<0.5): product < 0.0635 → values ~ 0.5 each
         entropic = HarmonyState(L=0.3, J=0.3, P=0.3, W=0.3)
         assert entropic.phase() == "ENTROPIC"
 
-        homeostatic = HarmonyState(L=0.6, J=0.6, P=0.6, W=0.6)
+        # For HOMEOSTATIC (0.5≤H<0.8): 0.0635 < product < 0.1016
+        # Values ~0.55 give product ≈ 0.091 → H ≈ 0.72 (HOMEOSTATIC)
+        homeostatic = HarmonyState(L=0.55, J=0.55, P=0.55, W=0.55)
         assert homeostatic.phase() == "HOMEOSTATIC"
 
+        # For AUTOPOIETIC (H≥0.8): product ≥ 0.1016
         autopoietic = HarmonyState(L=0.9, J=0.9, P=0.9, W=0.9)
         assert autopoietic.phase() == "AUTOPOIETIC"
 

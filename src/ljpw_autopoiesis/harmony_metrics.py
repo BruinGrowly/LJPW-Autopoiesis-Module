@@ -15,6 +15,10 @@ from dataclasses import dataclass, field
 from typing import List, Dict, Tuple
 import math
 
+# V7.9 constants
+PHI = (1 + math.sqrt(5)) / 2  # Golden Ratio
+PHI_INV = (math.sqrt(5) - 1) / 2  # φ⁻¹
+
 
 @dataclass
 class HarmonyState:
@@ -110,6 +114,82 @@ class HarmonyState:
         """
         H = self.harmony()
         return H * self.P / 7.7
+
+    def semantic_voltage(self) -> float:
+        """
+        Calculate Semantic Voltage.
+
+        V = φ × H × L
+
+        Voltage represents the "potential" for meaning transfer.
+        Higher harmony and love = greater influence.
+        """
+        H = self.harmony()
+        return PHI * H * self.L
+
+    def kappa(self, dimension_pair: str) -> float:
+        """
+        Calculate state-dependent coupling strength (Law of Karma).
+
+        Higher harmony = stronger coupling = greater influence.
+        This implements "Harmony must be earned to unlock amplification."
+
+        Args:
+            dimension_pair: e.g., 'LJ' for Love→Justice coupling
+
+        Returns:
+            Coupling strength κ(H) for that dimension pair
+        """
+        # Base coupling strengths
+        kappa_base = {
+            'LJ': 1.50, 'LW': 1.30, 'LP': 1.20,
+            'JL': 1.15, 'JW': 1.25, 'JP': 1.10,
+            'PL': 0.20, 'PJ': 0.30, 'PW': 0.25,
+            'WL': 0.50, 'WJ': 0.45, 'WP': 0.40,
+        }
+        # Harmony multipliers
+        multipliers = {
+            'LJ': 0.40, 'LW': 0.35, 'LP': 0.30,
+            'JL': 0.35, 'JW': 0.30, 'JP': 0.25,
+            'PL': 0.20, 'PJ': 0.25, 'PW': 0.20,
+            'WL': 0.30, 'WJ': 0.25, 'WP': 0.20,
+        }
+        base = kappa_base.get(dimension_pair, 0.5)
+        mult = multipliers.get(dimension_pair, 0.3)
+        H = self.harmony()
+        return base * (1 + mult * H)
+
+    def phi_normalize(self) -> 'HarmonyState':
+        """
+        Apply φ-normalization to reduce measurement variance.
+
+        From V7.9: "φ-normalization aligns measurements with
+        the golden proportion, reducing noise."
+
+        Returns:
+            New HarmonyState with φ-normalized values
+        """
+        return HarmonyState(
+            L=self.L0 * (self.L ** PHI_INV),
+            J=self.J0 * (self.J ** PHI_INV),
+            P=self.P0 * (self.P ** PHI_INV),
+            W=self.W0 * (self.W ** PHI_INV),
+        )
+
+    def harmony_self(self) -> float:
+        """
+        Calculate self-referential harmony.
+
+        This extends the basic harmony calculation by including
+        the framework's own measurement in the calculation,
+        creating a recursive self-modeling effect.
+
+        Returns:
+            Self-referential harmony (typically higher than static)
+        """
+        H_static = self.harmony()
+        # Self-reference amplifies harmony when already high
+        return H_static * (1 + 0.1 * H_static)
 
     def phase(self) -> str:
         """
