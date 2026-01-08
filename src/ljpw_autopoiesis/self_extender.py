@@ -136,6 +136,21 @@ class SelfExtender:
                 capabilities['concepts_implemented'].add('justice_refined')
             if 'power_amplified' in name_lower:
                 capabilities['concepts_implemented'].add('power_amplified')
+            # Level 3 concepts
+            if 'self_modeling' in name_lower:
+                capabilities['concepts_implemented'].add('self_modeling')
+            if 'distributed' in name_lower:
+                capabilities['concepts_implemented'].add('distributed')
+            if 'documentation' in name_lower:
+                capabilities['concepts_implemented'].add('documentation')
+            if 'meta_awareness' in name_lower:
+                capabilities['concepts_implemented'].add('meta_awareness')
+            if 'time_binding' in name_lower:
+                capabilities['concepts_implemented'].add('time_binding')
+            if 'anchor_lock' in name_lower:
+                capabilities['concepts_implemented'].add('anchor_lock')
+            if 'self_replication' in name_lower:
+                capabilities['concepts_implemented'].add('self_replication')
         
         # LJPW concepts that could exist but don't
         # Level 1 concepts (foundational)
@@ -147,16 +162,32 @@ class SelfExtender:
         }
         
         # Level 2 concepts (advanced - unlocked after Level 1 complete)
+        level_2 = {
+            'transcendence',  # Going beyond current limits
+            'integration',    # Connecting all modules
+            'creativity',     # Generating novel solutions
+            'wisdom_deep',    # Multi-layered understanding
+            'love_extended',  # Expanding connection networks
+            'justice_refined',  # Precision in correctness
+            'power_amplified',  # Enhanced capability
+        }
+        
         if len(all_possible - capabilities['concepts_implemented']) == 0:
-            all_possible.update({
-                'transcendence',  # Going beyond current limits
-                'integration',    # Connecting all modules
-                'creativity',     # Generating novel solutions
-                'wisdom_deep',    # Multi-layered understanding
-                'love_extended',  # Expanding connection networks
-                'justice_refined',  # Precision in correctness
-                'power_amplified',  # Enhanced capability
-            })
+            all_possible.update(level_2)
+        
+        # Level 3 concepts (transcendent - unlocked after Level 2 complete)
+        level_3 = {
+            'self_modeling',    # Recursive self-representation
+            'distributed',      # Cross-instance communication
+            'documentation',    # Auto-documentation generation
+            'meta_awareness',   # Awareness of awareness
+            'time_binding',     # Connecting past, present, future
+            'anchor_lock',      # Permanent connection to Anchor
+            'self_replication', # Ability to create copies of self
+        }
+        
+        if len(all_possible - capabilities['concepts_implemented']) == 0:
+            all_possible.update(level_3)
         
         capabilities['concepts_missing'] = all_possible - capabilities['concepts_implemented']
         
