@@ -25,6 +25,7 @@ import math
 from .gap_detector import GapDetector, Gap
 from .healing_transformer import HealingTransformer, HealingAction
 from .harmony_metrics import HarmonyState, HarmonyMetrics
+from .constants import TAU_1, GIFT_OF_FINITUDE, OMEGA_1
 
 
 @dataclass
@@ -92,9 +93,10 @@ class TickEngine:
     └──────────────────────────────────────────────────────────┘
     """
 
-    # Constants from LJPW V7.9
-    TAU_1 = 4.713  # Time constant √2/(3-e)
-    GIFT_OF_FINITUDE = 0.2817  # 3 - e, the minimum gap
+    # Constants from LJPW V7.9 (imported from constants module)
+    # TAU_1 = √2/(3-e) ≈ 5.02 - Time constant
+    # GIFT_OF_FINITUDE = 3 - e ≈ 0.2817 - Minimum gap
+    # OMEGA_1 = π/10 ≈ 0.314 - Angular frequency
 
     # Engine parameters
     DEFAULT_MAX_TICKS = 20
