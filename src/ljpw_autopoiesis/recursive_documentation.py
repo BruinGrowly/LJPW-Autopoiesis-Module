@@ -1,7 +1,7 @@
 """
 LJPW Recursive Documentation Module
 
-Auto-discovered by the framework at 2026-01-09T14:08:23.747665
+Auto-discovered by the framework at 2026-01-09T16:21:14.381223
 
 Description: self-reference applied to documentation
 Rationale: Synthesized by combining recursive with documentation

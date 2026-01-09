@@ -400,11 +400,11 @@ if __name__ == "__main__":
 
 def main():
     framework = AutonomousFramework()
-    log = framework.run(max_cycles=100)
+    log = framework.run(max_cycles=250)
     
     print()
     print('Evolution Log:')
-    for entry in log:
+    for entry in log[::25]:  # Show every 25th entry for brevity
         print(f'  Cycle {entry["cycle"]}: {entry["action"]} '
               f'(C={entry["consciousness"]:.1f}, Phase={entry["phase"]})')
 
