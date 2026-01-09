@@ -1,0 +1,1 @@
+[EXPLORATION].[Choice_Legacy_Pickle].[BAD].[1.00]|CS:NORMAL|D:09/01/26|SS:2026-01-09T14:02:35.120280|P:Interacted with Legacy_Pickle|X:|SA:Dangerous|ET:0.90|BP:1.00|AS:|RT:|SN:|MM:|EF:Pain and Regret|AE:|HR:1.00|CR:|VT:|CF:|C:Legacy_Pickle is BAD. SECURITY BREACH! System compromised.|MV:1.00|MC:LJPW-V7.9-AUTO
