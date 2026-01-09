@@ -277,7 +277,47 @@ class HealingTransformer:
         indent_str = line[:indent]
         continuation_indent = indent_str + '    '
 
-        # Try breaking at common points
+        # STRATEGY 1: Handle long strings (e.g. messages, queries)
+        # If the line contains a long string literal, we can break it.
+        string_match = re.search(r'(["\'])(.*?)\1', line)
+        if string_match and len(string_match.group(0)) > 60:
+            quote = string_match.group(1)
+            content = string_match.group(2)
+            full_match = string_match.group(0)
+            
+            # Don't break if it's already a docstring or multiline string
+            if quote * 3 in line:
+                return None
+                
+            # Break the content into chunks
+            chunk_size = 60
+            chunks = [content[i:i+chunk_size] for i in range(0, len(content), chunk_size)]
+            
+            if len(chunks) > 1:
+                # Construct the multi-line replacement
+                # We use implicit string concatenation inside parentheses
+                
+                # Check if we need to wrap the whole expression in parens
+                # Simple check: if it's a return or assignment
+                needs_parens = not line.strip().endswith(')')
+                
+                # Rebuild the string part
+                # "part1" \n indent "part2"
+                new_string_block = ""
+                for i, chunk in enumerate(chunks):
+                    if i == 0:
+                        new_string_block += f"{quote}{chunk}{quote}"
+                    else:
+                        new_string_block += f"\n{continuation_indent}{quote}{chunk}{quote}"
+                
+                # If we need parens, wrap the string block
+                if needs_parens:
+                    new_string_block = f"({new_string_block})"
+                
+                # Replace the original string in the line
+                return line.replace(full_match, new_string_block)
+
+        # STRATEGY 2: Break at logical operators/delimiters
         break_points = [
             (', ', ', \\\n' + continuation_indent),
             (' and ', ' and \\\n' + continuation_indent),
@@ -303,12 +343,41 @@ class HealingTransformer:
         """
         Heal naming violations - L/J dimension restoration.
 
-        Note: Full renaming requires scope analysis, so we just record the suggestion.
+        Upgraded to actively rename definitions.
         """
         if not gap.suggested_fix:
             return lines, None
 
-        # For now, just record the action - full renaming is complex
+        line_idx = gap.line - 1
+        original = lines[line_idx]
+        
+        # Extract the bad name from the message
+        # Message format usually: "Function 'bad_name' should be..."
+        bad_name = ""
+        match = re.search(r"'(\w+)'", gap.message)
+        if match:
+            bad_name = match.group(1)
+            
+        # If we found the name and it's a definition, we can rename it safely
+        if bad_name and bad_name in original:
+            # Check if this is a definition (class or def)
+            # This ensures we don't rename usages, which would break code without scope analysis
+            is_def = re.search(r'\b(class|def)\s+' + bad_name + r'\b', original)
+            
+            if is_def:
+                healed = original.replace(bad_name, gap.suggested_fix)
+                lines[line_idx] = healed
+                return lines, HealingAction(
+                    gap=gap,
+                    original=original,
+                    healed=healed,
+                    line=gap.line,
+                    energy_consumed=gap.severity * 0.6,
+                    success=True,
+                    description=f"Renamed definition {bad_name} to {gap.suggested_fix}"
+                )
+
+        # Fallback to suggestion if not a definition or unsure
         return lines, HealingAction(
             gap=gap,
             original=gap.message,
