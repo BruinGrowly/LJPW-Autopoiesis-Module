@@ -68,7 +68,7 @@ class FoldingSimulation:
         self.history = []
         print(f"\n--- SIMULATION MODE: {self.mode} ---")
 
-    def run(self, cycles=50):
+    def run(self, cycles=50, target=-2.0):
         for i in range(cycles):
             current_energy = self.calculate_energy(self.positions)
             
@@ -101,7 +101,7 @@ class FoldingSimulation:
             new_energy = self.calculate_energy(new_pos)
             
             if self.mode == "NO_INTENT":
-                # Apathy: Random Walk. Accepts ANY valid move. 
+                # Apathy: Random Walk. Accepts ANY valid move.
                 accept = True 
             elif self.mode == "NO_CONTEXT":
                 # Blind Greed: Accepts ONLY moves that lower energy immediately.
@@ -121,14 +121,13 @@ class FoldingSimulation:
 
             if accept:
                 self.positions = new_pos
-                if new_energy <= -2.0:
+                if new_energy <= target:
                     print(f"[Cycle {i}] NATIVE STATE REACHED (Energy {new_energy})")
                     return True
         
         final_energy = self.calculate_energy(self.positions)
         print(f"FAILED. Final Energy: {final_energy}")
         return False
-
     def calculate_energy(self, pos):
         s = ProteinState(self.sequence, pos)
         return s.calculate_energy()
@@ -183,26 +182,26 @@ class FoldingSimulation:
             return new_pos
 
 if __name__ == "__main__":
-    seq = "HPHPPHHPH" # Target Energy -2.0
+    # A Complex Sequence (16 residues)
+    # HHPPHHPHPHHPPPHH
+    # Requires significant folding to minimize Energy.
+    # Target Energy estimate: ~ -6.0 (lots of H-H contacts possible)
+    seq = "HHPPHHPHPHHPPPHH" 
+    target_energy = -5.0 # Conservative target
     
-    print(f"Target Sequence: {seq}")
-    print("Testing the IRREDUCIBILITY of Folding...")
+    print(f"Target Sequence: {seq} (Length: {len(seq)})")
+    print("Testing the IRREDUCIBILITY of Folding on COMPLEX TARGET...")
     
     # 1. NO INTENT (Random Walk)
-    # The protein has Context (Physics exists) but no drive to minimize energy.
-    # It acts locally.
     s1 = FoldingSimulation(seq, "NO_INTENT")
-    s1.run(100)
+    s1.run(200, target=target_energy) # Give it more time
     
     # 2. NO CONTEXT (Blind Optimization)
-    # The protein wants to minimize energy (Intent), but ignores the Global Shape (Centroid).
-    # It acts locally.
     s2 = FoldingSimulation(seq, "NO_CONTEXT")
-    s2.run(100)
+    s2.run(200, target=target_energy)
     
     # 3. FULL ICE (Semantic Folding)
-    # Intent (Energy) + Context (Centroid/Shape) + Execution (Move).
     s3 = FoldingSimulation(seq, "FULL_ICE")
-    s3.run(100)
-    print("\nVisual of Native State:")
+    s3.run(200, target=target_energy)
+    print("\nVisual of Native State (FULL_ICE):")
     print(ProteinState(seq, s3.positions).visualize())
