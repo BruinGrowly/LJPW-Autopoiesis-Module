@@ -1,7 +1,7 @@
 """
 LJPW Temporal Adaptation Module
 
-Auto-discovered by the framework at 2026-01-09T13:26:46.300459
+Auto-discovered by the framework at 2026-01-09T14:08:36.670237
 
 Description: time-aware adaptation
 Rationale: Synthesized by combining temporal with adaptation

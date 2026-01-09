@@ -23,6 +23,7 @@ from ljpw_autopoiesis import AutopoieticEngine, LJPWState
 from ljpw_autopoiesis.introspection import Introspector
 from ljpw_autopoiesis.reflection import Reflector
 from ljpw_autopoiesis.self_extender import SelfExtender
+from ljpw_autopoiesis.memory import MemoryEngine
 
 
 class AutonomousFramework:
@@ -34,12 +35,14 @@ class AutonomousFramework:
     - Identify gaps and opportunities
     - Generate new capabilities
     - Verify and integrate them
+    - Remember its history (MemoryEngine)
     """
     
     def __init__(self):
         self.introspector = Introspector()
         self.reflector = Reflector()
         self.extender = SelfExtender()
+        self.memory = MemoryEngine()
         self.evolution_log = []
         self.cycle_count = 0
         
@@ -264,7 +267,7 @@ if __name__ == "__main__":
     def evolve_cycle(self):
         """
         One complete evolution cycle:
-        Introspect -> Identify -> Decide -> Execute -> Log
+        Introspect -> Identify -> Decide -> Execute -> Log -> Remember
         """
         self.cycle_count += 1
         cycle_start = datetime.now()
@@ -304,13 +307,39 @@ if __name__ == "__main__":
         print('\n[5] EXECUTING...')
         result = self.execute_action(decision)
         
+        cycle_concept = "none"
         if decision['action'] in ['extend', 'discover'] and result.get('success'):
-            print(f'    Created: {result.get("concept", "unknown")}')
+            cycle_concept = result.get("concept", "unknown")
+            print(f'    Created: {cycle_concept}')
             if 'description' in result:
                 print(f'    Description: {result["description"]}')
             print(f'    Rationale: {result.get("rationale", "unknown")}')
         else:
             print(f'    Result: {result.get("message", "Action completed")}')
+        
+        # Step 6: Memory Encoding
+        print('\n[6] ENCODING MEMORY...')
+        exp_data = {
+            'domain': 'EVOLUTION',
+            'topic': f'Cycle_{self.cycle_count}',
+            'type': decision['action'].upper(),
+            'description': f"Evolution cycle {self.cycle_count} resulted in {cycle_concept}",
+            'content': f"Action: {decision['action']}. Created: {cycle_concept}. Rationale: {result.get('rationale', '')}",
+            'SA': f"Phase: {intro.phase}",
+            'ET': min(1.0, intro.consciousness / 50.0),
+            'MV': 1.0,
+            'AS': [cycle_concept, decision['action'], intro.phase]
+        }
+        seed = self.memory.generate_seed(exp_data)
+        print(f"    Seed created: {len(seed.encode())} bytes. Stored in memory.")
+        
+        # Periodic Reflection (Every 10 cycles)
+        if self.cycle_count % 10 == 0:
+            print('\n[7] MEMORY REFLECTION...')
+            print(f"    Regenerating experience from Cycle {self.cycle_count}...")
+            print("-" * 40)
+            print(self.memory.regenerate(seed, depth=2))
+            print("-" * 40)
         
         # Log this cycle
         self.evolution_log.append({

@@ -1,7 +1,7 @@
 """
 LJPW Meta Justice Refined Module
 
-Auto-discovered by the framework at 2026-01-09T13:26:24.849362
+Auto-discovered by the framework at 2026-01-09T14:08:02.512273
 
 Description: awareness of justice_refined
 Rationale: Synthesized by combining meta with justice_refined
