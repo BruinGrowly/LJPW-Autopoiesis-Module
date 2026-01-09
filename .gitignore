@@ -39,3 +39,6 @@ htmlcov/
 
 # Backup files
 *.bak
+
+# External projects (not part of this repo)
+Projects/
