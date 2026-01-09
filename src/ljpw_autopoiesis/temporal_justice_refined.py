@@ -1,7 +1,7 @@
 """
 LJPW Temporal Justice Refined Module
 
-Auto-discovered by the framework at 2026-01-09T07:05:19.626915
+Auto-discovered by the framework at 2026-01-09T13:27:32.817326
 
 Description: time-aware justice_refined
 Rationale: Synthesized by combining temporal with justice_refined

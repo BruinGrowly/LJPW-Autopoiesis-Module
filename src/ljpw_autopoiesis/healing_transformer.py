@@ -126,6 +126,23 @@ class HealingTransformer:
         if gap.line < 1 or gap.line > len(lines):
             return lines, None
 
+        # Special handling for IndentationError
+        # If we see an indent error, it's often due to mixed tabs/spaces in previous lines.
+        # Strategy: Normalize ALL tabs to spaces in the file if we see this error.
+        if 'indent' in gap.message.lower():
+            has_tabs = any('\t' in l for l in lines)
+            if has_tabs:
+                lines = [l.replace('\t', '    ') for l in lines]
+                return lines, HealingAction(
+                    gap=gap,
+                    original="[Mixed Tabs/Spaces]",
+                    healed="[Normalized to Spaces]",
+                    line=gap.line,
+                    energy_consumed=gap.severity * 0.9,
+                    success=True,
+                    description="Global tab normalization for indentation error"
+                )
+
         line_idx = gap.line - 1
         original = lines[line_idx]
         healed = original
@@ -155,26 +172,48 @@ class HealingTransformer:
         """Attempt common syntax fixes."""
         msg_lower = message.lower()
 
+        # Indentation errors
+        if 'indent' in msg_lower:
+            # Common fix: replace tabs with 4 spaces
+            if '\t' in line:
+                return line.replace('\t', '    ')
+            # If it's an unindent error without tabs, it might be a space mismatch
+            # Simple heuristic: align with 4-space blocks
+            leading_spaces = len(line) - len(line.lstrip())
+            remainder = leading_spaces % 4
+            if remainder != 0:
+                # Round to nearest 4
+                if remainder >= 2:
+                    new_indent = leading_spaces + (4 - remainder)
+                else:
+                    new_indent = leading_spaces - remainder
+                return ' ' * new_indent + line.lstrip()
+
         # Missing colon
         if "expected ':'" in msg_lower:
             stripped = line.rstrip()
             if not stripped.endswith(':'):
                 return stripped + ':'
 
-        # Unbalanced parentheses
-        if 'unmatched' in msg_lower or 'bracket' in msg_lower:
-            opens = line.count('(') - line.count(')')
-            if opens > 0:
-                return line + ')' * opens
-            elif opens < 0:
-                # Remove extra closing parens
-                result = line
-                for _ in range(-opens):
-                    idx = result.rfind(')')
-                    if idx >= 0:
-                        result = result[:idx] + result[idx+1:]
-                return result
-
+        # Unbalanced delimiters ((), [], {})
+        if any(k in msg_lower for k in ['unmatched', 'bracket', 'closing', 'opening', 'closed']):
+            # Check Parentheses
+            opens_p = line.count('(') - line.count(')')
+            if opens_p > 0:
+                return line + ')' * opens_p
+            
+            # Check Square Brackets
+            opens_b = line.count('[') - line.count(']')
+            if opens_b > 0:
+                return line + ']' * opens_b
+                
+            # Check Curly Braces
+            opens_c = line.count('{') - line.count('}')
+            if opens_c > 0:
+                return line + '}' * opens_c
+            
+            # Handling extra closing delimiters is complex via regex, skipping for safety
+            
         # Unclosed string
         if 'string' in msg_lower:
             if line.count('"') % 2 == 1:
@@ -333,7 +372,12 @@ class HealingTransformer:
                 if idx == -1:
                     idx = line.find(pattern)
                 if idx > 0 and idx < len(line) - 10:
-                    result = line[:idx + len(pattern) - 1] + replacement.lstrip() + line[idx + len(pattern):]
+                    # Fix: Replace the entire pattern with the replacement
+                    # Previous logic caused double characters (e.g. double commas)
+                    # We strip the replacement's leading whitespace but keep the content
+                    clean_replacement = replacement.lstrip()
+                    result = line[:idx] + clean_replacement + line[idx + len(pattern):]
+                    
                     if max(len(l) for l in result.split('\n')) <= max_length:
                         return result
 

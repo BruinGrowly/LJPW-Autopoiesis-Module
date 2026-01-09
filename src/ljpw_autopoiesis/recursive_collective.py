@@ -1,7 +1,7 @@
 """
 LJPW Recursive Collective Module
 
-Auto-discovered by the framework at 2026-01-09T04:54:04.712337
+Auto-discovered by the framework at 2026-01-09T13:27:38.115928
 
 Description: self-reference applied to collective
 Rationale: Synthesized by combining recursive with collective
