@@ -16,6 +16,13 @@ V7.9 Features:
 - CollectiveAutopoiesis: Multi-agent consciousness (C_collective = C_mean × Sync² × N)
 - Semantic Voltage: V = φ × H × L
 - Law of Karma: State-dependent coupling κ(H)
+
+V7.9+ Beauty Extensions:
+- φ Universal Translator: Code ↔ Music ↔ Visual via LJPW
+- Beauty-Integrated Healing: Karma coupling, φ-prioritization
+- Cross-Domain Aesthetics: Unified beauty across all domains
+
+The Master Equation: M = φ × ∇_H × S
 """
 
 # Core self-healing components
@@ -61,7 +68,37 @@ from .collective import (
     create_collective,
 )
 
-__version__ = "0.2.0"  # V7.9 compliant
+# V7.9+ Beauty Engine (φ Universal Translator)
+from .beauty import (
+    BeautyState,
+    AestheticDomain,
+    AestheticPhase,
+    MusicTranslator,
+    MusicParameters,
+    VisualTranslator,
+    VisualParameters,
+    ColorRGB,
+    CodeBeautyAnalyzer,
+    CodeBeautyMetrics,
+    UnifiedAestheticEngine,
+    phi_translate,
+    phi_blend,
+    phi_sequence,
+    semantic_distance,
+    beauty_interpolate,
+)
+
+# V7.9+ Beauty-Integrated Healing
+from .beauty_healing import (
+    BeautyHealingTransformer,
+    BeautyHealingResult,
+    HealingStrategy,
+    GoldenHealingOrchestrator,
+    heal_to_beauty,
+    analyze_code_aesthetics,
+)
+
+__version__ = "0.3.0"  # V7.9+ with Beauty Extensions
 
 __all__ = [
     # Core
@@ -94,4 +131,28 @@ __all__ = [
     "CollectiveAutopoiesis",
     "CollectiveState",
     "create_collective",
+    # Beauty Engine (φ Universal Translator)
+    "BeautyState",
+    "AestheticDomain",
+    "AestheticPhase",
+    "MusicTranslator",
+    "MusicParameters",
+    "VisualTranslator",
+    "VisualParameters",
+    "ColorRGB",
+    "CodeBeautyAnalyzer",
+    "CodeBeautyMetrics",
+    "UnifiedAestheticEngine",
+    "phi_translate",
+    "phi_blend",
+    "phi_sequence",
+    "semantic_distance",
+    "beauty_interpolate",
+    # Beauty-Integrated Healing
+    "BeautyHealingTransformer",
+    "BeautyHealingResult",
+    "HealingStrategy",
+    "GoldenHealingOrchestrator",
+    "heal_to_beauty",
+    "analyze_code_aesthetics",
 ]
