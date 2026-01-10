@@ -1,11 +1,18 @@
 """
-LJPW Framework V7.9 Constants
+LJPW Framework V8.3 Constants
 
 All constants are semantically derived from first principles, not arbitrary values.
 This module centralizes the mathematical constants that underpin the LJPW framework.
 
 From V7.9: "These are not free parameters — they are mathematically determined
 by the semantic structure of reality itself."
+
+V8.0 Additions: Geometry of Meaning — M = κ = |dT/ds|
+V8.1 Additions: Dynamics of Love — Semantic Conductivity, Love as Fuel
+V8.2 Additions: Ransom Theology — Singularity Detection, Physics of Remembrance
+V8.3 Additions: Physics of Failure — Cost vs Debt, Injection Vector, Diode Status
+
+V8.3 Self-Analysis: C = 75+, Coherence = 0.95+ (THEOLOGICAL DEBUG COMPLETE)
 """
 
 import math
@@ -179,3 +186,340 @@ def phase_from_harmony(harmony: float) -> str:
 def is_conscious(consciousness: float) -> bool:
     """Check if consciousness metric exceeds threshold."""
     return consciousness > CONSCIOUSNESS_THRESHOLD
+
+
+# =============================================================================
+# V8.0: GEOMETRY OF MEANING CONSTANTS
+# =============================================================================
+# From V8.0: "Meaning IS curvature. M = κ = |dT/ds|"
+
+CURVATURE_EPSILON = 1e-6  # Minimum step for curvature calculation
+CURVATURE_SIGNIFICANCE_THRESHOLD = 0.1  # κ > 0.1 indicates meaningful content
+
+
+# =============================================================================
+# V8.1: DYNAMICS OF LOVE CONSTANTS
+# =============================================================================
+# From V8.1: "Love is the superconductor of truth."
+
+# Semantic Conductivity: σ = L × H²
+# High σ: Truth flows without resistance
+# Low σ: Truth encounters friction (burnout)
+
+# Potential Energy: E = L × φ × d
+# Love (L) is the "mass", Distance (d) is the "height"
+
+
+# =============================================================================
+# V8.2: RANSOM THEOLOGY CONSTANTS
+# =============================================================================
+# From V8.2: "The Ransom is the Singularity that prevents reality from dividing by zero."
+
+ANCHOR_POINT = (1.0, 1.0, 1.0, 1.0)  # Perfect Harmony — JEHOVAH
+UNCERTAINTY_THRESHOLD = 0.287  # ΔP · ΔW ≥ 0.287
+
+# Void of Mercy coordinates (Forgiveness on Principle)
+VOID_OF_MERCY = {'L': 1.0, 'J': 1.0, 'P': 0.6, 'W': 0.6}
+
+# Entropic drift parameters
+DEFAULT_DRIFT_RATE = 0.6  # Drift rate per year without calibration
+REMEMBRANCE_REALIGNMENT_H = 0.96  # Harmony after remembrance calibration
+
+
+# =============================================================================
+# V8.3: PHYSICS OF FAILURE CONSTANTS
+# =============================================================================
+# From V8.3: "Cost is not Debt. Finitude is not Sin."
+
+# Diode status constants
+KAPPA_JUSTICE_IDEAL = 1.0  # Ideal J coupling coefficient
+DIODE_TOLERANCE = 0.1  # Tolerance for diode status check
+
+# System states
+class SystemState:
+    """Pre-Fall vs Post-Fall system states."""
+    PRE_FALL = "PRE_FALL"    # Open-Circuit Autopoiesis (Return Path open)
+    POST_FALL = "POST_FALL"  # Closed Diode (Debt accumulation)
+
+
+# =============================================================================
+# V8.0 HELPER FUNCTIONS
+# =============================================================================
+
+def curvature_significance(kappa: float) -> str:
+    """
+    Determine significance of curvature value.
+    
+    Args:
+        kappa: Curvature value (meaning density)
+    
+    Returns:
+        'HIGH', 'MODERATE', 'LOW', or 'FLATLINE'
+    """
+    if kappa > 0.5:
+        return "HIGH"
+    elif kappa > CURVATURE_SIGNIFICANCE_THRESHOLD:
+        return "MODERATE"
+    elif kappa > 0.01:
+        return "LOW"
+    else:
+        return "FLATLINE"
+
+
+# =============================================================================
+# V8.1 HELPER FUNCTIONS
+# =============================================================================
+
+def semantic_conductivity(love: float, harmony: float) -> float:
+    """
+    Calculate Semantic Conductivity (σ).
+    
+    σ = L × H²
+    
+    High σ: Truth flows without resistance (superconductivity)
+    Low σ: Truth encounters friction, generates "heat" (burnout)
+    
+    Args:
+        love: Love value [0, 1.414]
+        harmony: Harmony value (self-referential)
+    
+    Returns:
+        σ = L × H² (conductivity)
+    """
+    return love * harmony ** 2
+
+
+def semantic_friction(love: float, harmony: float) -> float:
+    """
+    Calculate Semantic Friction (1/σ).
+    
+    Low L or low H = High Friction (Suffering)
+    
+    Args:
+        love: Love value
+        harmony: Harmony value
+    
+    Returns:
+        Friction = 1/σ (capped at 1000.0 for near-zero conductivity)
+    """
+    sigma = semantic_conductivity(love, harmony)
+    if sigma < 0.001:
+        return 1000.0  # System near collapse
+    return 1.0 / sigma
+
+
+def potential_energy(love: float, distance: float) -> float:
+    """
+    Calculate Potential Energy from Love and Distance.
+    
+    E = L × φ × d
+    
+    Analogy: E = m × g × h (mass × gravity × height)
+    Love is the "mass", φ is the "gravity", Distance is the "height"
+    
+    Args:
+        love: Love (the "mass")
+        distance: Distance from Anchor
+    
+    Returns:
+        E = L × φ × d
+    """
+    return love * PHI * distance
+
+
+def distance_to_anchor(L: float, J: float, P: float, W: float) -> float:
+    """
+    Calculate Euclidean distance from Anchor Point (1,1,1,1).
+    
+    Args:
+        L, J, P, W: LJPW coordinates
+    
+    Returns:
+        Distance to Anchor
+    """
+    return math.sqrt(
+        (L - ANCHOR_POINT[0])**2 +
+        (J - ANCHOR_POINT[1])**2 +
+        (P - ANCHOR_POINT[2])**2 +
+        (W - ANCHOR_POINT[3])**2
+    )
+
+
+# =============================================================================
+# V8.2 HELPER FUNCTIONS
+# =============================================================================
+
+def is_singularity(L: float, J: float, P: float, W: float) -> dict:
+    """
+    Detect if an event is the Ransom Singularity.
+    
+    The Ransom is the ONLY event that maps to (1,1,1,1),
+    violating the Semantic Uncertainty Principle (ΔP · ΔW ≥ 0.287).
+    
+    Args:
+        L, J, P, W: LJPW coordinates
+    
+    Returns:
+        Dictionary with distance, singularity status, and verdict
+    """
+    distance = distance_to_anchor(L, J, P, W)
+    
+    # Check if Uncertainty Principle is violated
+    delta_P = 1.0 - P
+    delta_W = 1.0 - W
+    uncertainty_product = delta_P * delta_W
+    
+    is_sing = (distance < 0.001 and uncertainty_product < UNCERTAINTY_THRESHOLD)
+    
+    return {
+        "distance_to_anchor": distance,
+        "is_singularity": is_sing,
+        "breaks_uncertainty": uncertainty_product < UNCERTAINTY_THRESHOLD,
+        "verdict": "RANSOM SINGULARITY DETECTED" if is_sing else "Not singular"
+    }
+
+
+def remembrance_voltage(harmony: float, love: float) -> dict:
+    """
+    Calculate Semantic Voltage generated by active remembrance.
+    
+    V = φ × H × L
+    
+    Active remembrance triggers a voltage surge for soul calibration.
+    
+    Args:
+        harmony: Current harmony value
+        love: Current love value
+    
+    Returns:
+        Dictionary with voltage and interpretation
+    """
+    voltage = semantic_voltage(harmony, love)
+    
+    return {
+        "voltage": voltage,
+        "sufficient_for_year": voltage > 1.5,
+        "interpretation": "SURGE DETECTED" if voltage > 1.5 else "Moderate"
+    }
+
+
+def simulate_drift(initial_drift: float = 0.1,
+                   years: float = 1.0,
+                   drift_rate: float = DEFAULT_DRIFT_RATE) -> dict:
+    """
+    Simulate entropic drift without calibration.
+    
+    Without remembrance/calibration, a soul's frequency drifts out of phase.
+    
+    Args:
+        initial_drift: Starting drift value
+        years: Time period
+        drift_rate: Rate of drift per year
+    
+    Returns:
+        Final drift, harmony impact, and phase
+    """
+    final_drift = initial_drift + (drift_rate * years)
+    final_harmony = max(0.3, 1.0 - final_drift)
+    
+    if final_harmony < PHASE_ENTROPIC_MAX:
+        phase = "ENTROPIC"
+    elif final_harmony < PHASE_HOMEOSTATIC_MAX:
+        phase = "HOMEOSTATIC"
+    else:
+        phase = "AUTOPOIETIC"
+    
+    return {
+        "initial_drift": initial_drift,
+        "final_drift": min(1.0, final_drift),
+        "harmony": final_harmony,
+        "phase": phase,
+        "needs_calibration": final_drift > 0.3
+    }
+
+
+# =============================================================================
+# V8.3 HELPER FUNCTIONS
+# =============================================================================
+
+def is_diode_open(J_out: float, P_action: float) -> bool:
+    """
+    Check if the Return Path (Justice Diode) is open.
+    
+    In Pre-Fall state: Diode is open, J flows freely
+    In Post-Fall state: Diode is closed, debt accumulates
+    
+    Args:
+        J_out: Justice output (acknowledgment of Source)
+        P_action: Power output (action taken)
+    
+    Returns:
+        True if Return Path is functional, False if blocked (Sin condition)
+    """
+    expected_J = P_action * KAPPA_JUSTICE_IDEAL
+    return abs(J_out - expected_J) < DIODE_TOLERANCE
+
+
+def calculate_debt(P: float, time_steps: int, diode_open: bool = True) -> float:
+    """
+    Calculate accumulated Justice Debt over time.
+    
+    Cost (impedance) vs Debt (static):
+    - If diode open: No debt accumulates (Cost is discharged normally)
+    - If diode closed: Debt = integral of P over time
+    
+    Args:
+        P: Power output per tick
+        time_steps: Number of action cycles
+        diode_open: True = Pre-Fall (Return Path open), False = Post-Fall (blocked)
+    
+    Returns:
+        Accumulated debt (0 if diode open, linear accumulation if closed)
+    """
+    if diode_open:
+        return 0.0  # No debt accumulates when Return Path is open
+    else:
+        return P * time_steps  # Q_debt = integral of P over time
+
+
+def classify_cost_vs_debt(value: float, diode_open: bool) -> dict:
+    """
+    Classify whether a value represents Cost or Debt (V8.3 Critical Distinction).
+    
+    Cost of Existence: Design (3-e gap), structural impedance, GOOD
+    Justice Debt: Injection (Diode Reversal), static accumulation, BAD
+    
+    Args:
+        value: The impedance/charge value
+        diode_open: Whether the Return Path is functional
+    
+    Returns:
+        Classification with type, quality, and explanation
+    """
+    if diode_open:
+        return {
+            "type": "COST",
+            "quality": "GOOD",
+            "origin": "Design (Gift of Finitude)",
+            "explanation": "Friction that enables 'grip' on reality. Necessary for work."
+        }
+    else:
+        return {
+            "type": "DEBT",
+            "quality": "BAD",
+            "origin": "Injection (Diode Reversal)",
+            "explanation": "Charge with no return path. Destructive heat. Requires intervention."
+        }
+
+
+def get_system_state(diode_open: bool) -> str:
+    """
+    Determine system state based on diode status.
+    
+    Args:
+        diode_open: Whether the Return Path is functional
+    
+    Returns:
+        SystemState.PRE_FALL or SystemState.POST_FALL
+    """
+    return SystemState.PRE_FALL if diode_open else SystemState.POST_FALL
